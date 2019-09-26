@@ -48,7 +48,7 @@ else:
 from random import random
 
 # note this import to queue implementation in p0 package
-from m03_sequences.p0.queue import ArrayQueue
+from queue import ArrayQueue
 
 def hot_potato(name_list, num):
     """
@@ -60,8 +60,19 @@ def hot_potato(name_list, num):
     :param num: the counting constant (i.e., the length of each round of the game)
     :return: the winner (that is, the last player standing after everybody else is eliminated)
     """
-    pass
+    Q = ArrayQueue()
+    for i in name_list:
+        Q.enqueue(i)
+    
+    while Q.__len__() != 1:
+        for k in range(num):
+            dequed = Q.dequeue()
+            Q.enqueue(dequed)
+        removed = Q.dequeue()
+        print(f'{removed} has been removed from the game!')
 
+    winner = Q.first()
+    return winner
 
 def hot_potato_spicy(name_list, num):
     """
@@ -71,14 +82,39 @@ def hot_potato_spicy(name_list, num):
     :param num: the counting constant (e.g., the length of each round of the game)
     :return: the winner
     """
-    pass
+    def oneRound():
+        for k in range(num):
+            dequed = Q.dequeue()
+            Q.enqueue(dequed)
+
+        if random()>0.5:
+            return oneRound()
+        else:
+            roundLoser = Q.first()
+            if lives[roundLoser] > 1:
+                lives[roundLoser] -= 1
+            else:
+                gameLoser = Q.dequeue()
+                print(f'{gameLoser} has been eliminated from the game!')
+
+    Q = ArrayQueue()
+    lives = {player[0]: player[1] for player in name_list}
+
+    for i in name_list:
+        Q.enqueue(i[0])
+    
+    while Q.__len__() != 1:
+        oneRound()
+
+    winner = Q.first()
+    return winner
+
 
 if __name__ == '__main__':
     name_list = ("Marco", "John", "Hoang", "Minji", "Hyunsuk", "Jiwoo")
-    winner = hot_potato(name_list, 5)
-    print("...and the winner is: {0}".format(winner))
+    winner1 = hot_potato(name_list, 5)
+    print("...and the winner in 'Hot potato' game is: {0}".format(winner1))
 
     name_list = (["Marco", 5], ["John", 5], ["Hoang", 5], ["Minji", 5], ["Hyunsuk", 5], ["Jiwoo", 5])
-    winner = hot_potato_spicy(name_list, 21)
-    # winner = hot_potato(name_list, 5)
-    print("...and the winner is: {0}".format(winner))
+    winner2 = hot_potato_spicy(name_list, 21)
+    print("...and the winner in 'Spicy hot potato' is: {0}".format(winner2))
