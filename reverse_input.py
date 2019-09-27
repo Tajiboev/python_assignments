@@ -9,27 +9,28 @@
 """
 
 # Do you need a stack or a queue? Import the correct datastore structure from p0 here
-# from m03_sequences.p0.stack import ???
+from stack import ArrayStack
 
 def print_reverse_order():
-
-    pass
-
-if __name__ == '__main__':
-    """
-    Run this to understand how to read user input from command line
-    """
-    print("Enter one word: ")
-    word1 = input()
-    print("You entered: {0}".format(word1))
-    print("---- Read a sequence of words ---")
-    word = " "
+    words_stack = ArrayStack()
     stop = False
     while not stop:
-        word = input()
-        print("You entered: {0}".format(word))
-        if word == "stop":
-            print("STOP!")
+        word = input('Please input a word: ').strip()
+        if word == 'stop':
+            stop = True
+            break
+        words_stack.push(word)
+    
+    reverse = ''
+    while not words_stack.is_empty():
+        reverse += (f' {words_stack.pop()}')
+
+    print(f'Your words in reverse order: {reverse.lstrip()}') 
+    
+
+if __name__ == '__main__':
+    print_reverse_order()
+
 
     """
     NOTE: add some code to test your implementation of the two functions transfer and print_reverse_order
