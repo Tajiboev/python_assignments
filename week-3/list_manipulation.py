@@ -3,7 +3,7 @@ Your task is to complete the implementation of the functions below, which do som
 manipulation of linked lists (that is, you need to use the LinkedList class defined in the p0 session)
 """
 
-from m03_sequences.p0.linked_list import LinkedList
+from linked_list import LinkedList
 
 
 def find(L, e):
@@ -13,7 +13,16 @@ def find(L, e):
     :param L: the list
     :param e: the element to look for
     """
-    pass
+    pos = 1
+    walk = L._head
+    while walk is not None:
+        if walk._data == e:
+            print("Element " + str(e) + "found in the list at position " + str(pos))
+            return
+        walk = walk._next
+        pos += 1
+    print("Element " + str(e) + " not found in the list")
+    return
 
 
 def cat(L1,L2):
@@ -24,7 +33,13 @@ def cat(L1,L2):
     Example: L1 = 10 -> 20 -> 5   ; L2 = 89 -> 56 -> 80
     After executiing the function, it will be: L1 = 10 -> 20 -> 5  -> 89 -> 56 -> 80 ; L2 = 89 -> 56 -> 80
     """
-    pass
+    walk = L2._head
+    len = L1.__len__()
+    pos = len + 1
+    while walk is not None:
+        L1.insert_at_position(pos,walk._data)
+        pos += 1
+        walk = walk._next
 
 
 def copy(L):
@@ -36,7 +51,14 @@ def copy(L):
     :param L: the list to copy
     :return: a "deep" copy of the list L
     """
-    pass
+    new = LinkedList()
+    walk = L._head
+    pos = 1
+    while walk is not None:
+        new.insert_at_position(pos, walk._data)
+        pos += 1
+        walk = walk._next
+    return new
 
 def copy_and_cat(L1,L2):
     """
@@ -47,7 +69,19 @@ def copy_and_cat(L1,L2):
     :param L2:
     :return: a list containing the concatenation of L1 and L2
     """
-    pass
+    new = LinkedList()
+    walk = L1._head
+    pos = 1
+    while walk is not None:
+        new.insert_at_position(pos, walk._data)
+        pos += 1
+        walk = walk._next
+    walk = L2._head
+    while walk is not None:
+        new.insert_at_position(pos, walk._data)
+        pos += 1
+        walk = walk._next
+    return new
 
 
 def len_recursive(node):
@@ -56,7 +90,9 @@ def len_recursive(node):
     :param node: the head of the list
     :return: the length of the list
     """
-    pass
+    if node._next == None:
+        return 1
+    return len_recursive(node._next) + 1
 
 """ main() to do some testing"""
 if __name__ == '__main__':

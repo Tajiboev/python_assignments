@@ -6,8 +6,8 @@ Note the import of the Node class, this is needed if you need to create new node
 a list
 """
 
-from m03_sequences.p0.doubly_linked_list import DoublyLinkedList
-from m03_sequences.p0.doubly_linked_list import Node
+from doubly_linked_list import DoublyLinkedList
+from doubly_linked_list import Node
 
 def swap_first_with_last(DL):
     """
@@ -15,7 +15,10 @@ def swap_first_with_last(DL):
     E.g. swap_first_with_last() applied to 10 <-> 67 <-> 87 <-> 9 returns 9 <-> 67 <-> 87 <-> 10]
     :param DL: a doubly linked list
     """
-    pass
+    temp = DL._head._data
+    DL._head._data = DL._tail._data
+    DL._tail._data = temp
+    return
 
 
 def insert_at_position(DL, n, data):
@@ -29,9 +32,37 @@ def insert_at_position(DL, n, data):
     :param n: the position at which n should be inserted
     :param data: the element to insert
     """
-    pass
-
-
+    len = DL.__len__()
+    if n > len + 1 or n <= 0:
+        print("Insert fail: wrong position")
+        return
+    if n == len + 1:
+        DL.add(data)
+        return
+    else:
+        new_node = Node(data, None, None)
+        if n < len/2:
+            walk = DL._head
+            for i in range(n - 1):
+                walk = walk._next
+            if n != 1:
+                new_node._prev = walk._prev
+                walk._prev._next = new_node
+            new_node._next = walk
+            walk._prev = new_node
+            if n == 1:
+                DL._head = new_node
+        else:
+            walk = DL._tail
+            for i in range(len - n):
+                walk = walk._prev
+            new_node._prev = walk._prev
+            walk._prev._next = new_node
+            new_node._next = walk
+            walk._prev = new_node
+            if n == 1:
+                DL._head = new_node
+        return
 
 
 def special_copy(DL1,DL2):
@@ -44,7 +75,16 @@ def special_copy(DL1,DL2):
     :param DL1: a doubly linked list
     :param DL2: a doubly linked list
     """
-    pass
+    new = DoublyLinkedList()
+    walk = DL1._head
+    while walk is not None:
+        new.add(walk._data)
+        walk = walk._next
+    walk = DL2._tail
+    while walk is not None:
+        new.add(walk._data)
+        walk = walk._prev
+    return new
 
 
 
@@ -88,7 +128,6 @@ if __name__ == '__main__':
     insert_at_position(DL2, 4, "4")
     insert_at_position(DL2, 7, "7777")
     DL2.print()
-
     """ test cat """
     print("========== Test special_copy() ===================================")
     DL1.print()

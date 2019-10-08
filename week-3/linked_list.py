@@ -28,6 +28,18 @@ class LinkedList:
         temp = Node(e)
         temp._next = self._head
         self._head = temp
+    
+    def add_last(self, e):
+        """ ad an element at the start of the list (i.e., after the "head" """
+        temp = Node(e)
+        if self._head is None:
+            self._head = temp
+        
+        last_node = self._head
+        while last_node._next:
+            last_node = last_node._next
+        last_node._next = temp
+
 
     def remove_first(self):
         if self._head is None:
@@ -90,8 +102,8 @@ if __name__ == '__main__':
     list.add_first(100)
     list.add_first(34)
     list.add_first(87)
-    # list.add_last(150)
-    # list.add_last(2000)
+    list.add_last(150)
+    list.add_last(2000)
     list.print()
     list.find_and_remove(87)
     list.find_and_remove("Marco")
@@ -102,11 +114,10 @@ if __name__ == '__main__':
     list.print()
     list.remove_at_position(0)
     list.print()
-    # list.print()
-    # list.add_last(140)
-    # list.add_first("Marco")                     # note that I can add anything to a list
-    # list.add_first("John")
-    # list.add_last(67)
-    # list.print()
-    # list.remove_at_position(3)
+    list.add_last(140)
+    list.add_first("Marco")                     # note that I can add anything to a list
+    list.add_first("John")
+    list.add_last(67)
+    list.print()
+    list.remove_at_position(3)
     print(str(list.__len__()))
