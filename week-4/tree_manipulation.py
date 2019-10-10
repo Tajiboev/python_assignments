@@ -34,11 +34,15 @@ def build_UNIST_tree():
 
     """
     tree = LinkedBinaryTree()
-    tree._add_root("UNIST")
-    tree._add_left("Engineering")
-    tree._add_right("Business")
+    root = tree._add_root("UNIST")
+    p_eng = tree._add_left(root, "Engineering")
+    p_business = tree._add_right(root, "Business")
+    p_man_eng = tree._add_left(p_eng, "Management Engineering")
+    p_big_data = tree._add_left(p_man_eng, "Big datastore")
+    p_bpm = tree._add_right(p_man_eng, "Business process management")
+    p_mat_eng = tree._add_right(p_eng, "Materials Engineering")
+    p_ba = tree._add_left(p_business, "Business Administration")
     return tree
-    pass
 
 
 def LCA(T, n1, n2):
@@ -68,7 +72,6 @@ def preorder_indent(T, p, d):
     print(2 * d * '-' + str(p.element()))
     for c in T.children(p):
         preorder_indent(T, c, d + 1)
-
 
 if __name__ == '__main__':
     tree = build_UNIST_tree()

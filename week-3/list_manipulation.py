@@ -33,13 +33,13 @@ def cat(L1,L2):
     Example: L1 = 10 -> 20 -> 5   ; L2 = 89 -> 56 -> 80
     After executiing the function, it will be: L1 = 10 -> 20 -> 5  -> 89 -> 56 -> 80 ; L2 = 89 -> 56 -> 80
     """
-    walk = L2._head
-    len = L1.__len__()
-    pos = len + 1
-    while walk is not None:
-        L1.insert_at_position(pos,walk._data)
-        pos += 1
-        walk = walk._next
+    current = L2._head
+
+    while current:
+        L1.add_last(current._data)
+        current = current._next
+    
+    return L1
 
 
 def copy(L):
@@ -53,7 +53,7 @@ def copy(L):
     """
     new = LinkedList()
     walk = L._head
-    pos = 1
+    pos = 0
     while walk is not None:
         new.insert_at_position(pos, walk._data)
         pos += 1
@@ -70,17 +70,19 @@ def copy_and_cat(L1,L2):
     :return: a list containing the concatenation of L1 and L2
     """
     new = LinkedList()
-    walk = L1._head
-    pos = 1
-    while walk is not None:
-        new.insert_at_position(pos, walk._data)
-        pos += 1
-        walk = walk._next
-    walk = L2._head
-    while walk is not None:
-        new.insert_at_position(pos, walk._data)
-        pos += 1
-        walk = walk._next
+
+    current = L1._head
+
+    while current:
+        new.append(current._data)
+        current = current._next
+    
+    current = L2._head
+    
+    while current:
+        new.append(current._data)
+        current = current._next
+    
     return new
 
 
