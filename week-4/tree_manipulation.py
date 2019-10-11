@@ -45,7 +45,7 @@ def build_UNIST_tree():
     return tree
 
 
-def LCA(T, n1, n2):
+def findLCA(T, n1, n2):
     """
     This function returns the lowest common ancestor of two positions in a tree n1 and n2.
     The LCA is the lowest position in T that has both n1 and n2 as descendants.
@@ -54,8 +54,47 @@ def LCA(T, n1, n2):
     :param n2: position 2 in tree
     :return: the LCA of n1 and n2
     """
+    root = T._root
+    if not root:
+	    return root
 
-    pass
+	# findLCA.n1 and findLCA.n2 are boolean variables to verify nodes exists in tree.
+	# Current node Match n1
+    if root._element == n1:
+	    findLCA.n1 = True
+
+	# Current node Match n2
+    if root._element == n2:
+	    findLCA.n2 = True
+
+	# Both have been Matched no need to go any further.
+	# This condition is added for scenario where both nodes are found no need to
+	# further down the tree.
+    if findLCA.n1 and findLCA.n2:
+        return root
+
+    # if lca_left not null atleast one of the nodes is present in left sub tree
+    lca_left = findLCA(root._left, n1, n2)
+
+    # Both have been Matched no need to go any further
+    if findLCA.n1 and findLCA.n2:
+        return lca_left
+
+    # if lca_right not null at least one of the nodes is present in right sub tree
+    lca_right = findLCA(root._right, n1, n2)
+
+    # This condition is added for scenario where one of the requested node is LCA
+    # Here we will override the child result received from parent node
+    if root._data == n1 or root._data == n2:
+        return root
+
+    # if one node is present in left subtree and other in right subtree.
+    # this will be your lowest common ancestor
+    if lca_left and lca_right:
+        return root
+
+    # return if any of the subtree returned a result
+    return lca_right if lca_right else lca_left
 
 
 def preorder_indent(T, p, d):
@@ -86,19 +125,3 @@ if __name__ == '__main__':
     print(p_business.element())
     p_man_eng = tree.left(p_engineering)
     print(p_man_eng.element())
-
-    """ implement here the code to test the LCA function that you implemented """
-    """
-    pos1 = p_bpm
-    pos2 = p_wood
-    lca1 = LCA(tree, pos1, pos2)
-    print("LCA of {0}, {1} is: {2}".format(pos1.element(), pos2.element(), lca1.element()))
-    pos1 = p_wood
-    pos2 = p_bigdata
-    lca1 = LCA(tree, pos1, pos2)
-    print("LCA of {0}, {1} is: {2}".format(pos1.element(), pos2.element(), lca1.element()))
-    pos1 = p_b_a
-    pos2 = p_bpm
-    lca1 = LCA(tree, pos1, pos2)
-    print("LCA of {0}, {1} is: {2}".format(pos1.element(), pos2.element(), lca1.element()))
-        """
