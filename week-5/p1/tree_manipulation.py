@@ -12,7 +12,7 @@ The second function (LCA) finds the common ancestor of two positions in a binary
 Note that a convenient function for pretty print of the content of a tree is provided below
 """
 
-from linked_binary_tree import LinkedBinaryTree
+from m04_trees.p0.linked_binary_tree import LinkedBinaryTree
 
 
 def build_UNIST_tree():
@@ -20,7 +20,7 @@ def build_UNIST_tree():
     This function returns a (linked) binary tree that contains (a simplified and fictitious  version of)
     the organisational structure of schools and departments at UNIST.
     In particular, this function should return the following tree:
-    
+
     UNIST
     --Engineering
     ----Management Engineering
@@ -33,31 +33,21 @@ def build_UNIST_tree():
     ----Business Administration
 
     """
-    tree = LinkedBinaryTree()
-    root = tree._add_root("UNIST")
-    p_eng = tree._add_left(root, "Engineering")
-    p_business = tree._add_right(root, "Business")
-    p_man_eng = tree._add_left(p_eng, "Management Engineering")
-    p_big_data = tree._add_left(p_man_eng, "Big datastore")
-    p_bpm = tree._add_right(p_man_eng, "Business process management")
-    p_mat_eng = tree._add_right(p_eng, "Materials Engineering")
-    p_ba = tree._add_left(p_business, "Business Administration")
-    return tree
+    pass
 
 
-def lca(root, a, b):
+def LCA(T, n1, n2):
+    """
+    This function returns the lowest common ancestor of two positions in a tree n1 and n2.
+    The LCA is the lowest position in T that has both n1 and n2 as descendants.
+    :param T: the binary tree
+    :param n1: position 1 in T
+    :param n2: position 2 in tree
+    :return: the LCA of n1 and n2
+    """
 
-    if not root: return None
-    if root == a._node or root == b._node: return root._element
-    left = lca(root._left, a, b)
-    right = lca(root._right, a, b)
-    if left and right: 
-        # a & b are on both sides
-        return root._element
-    else: 
-        # EITHER a/b is on one side 
-        # OR a/b is not in L&R subtrees
-        return left if left else right
+    pass
+
 
 def preorder_indent(T, p, d):
     """
@@ -74,23 +64,33 @@ def preorder_indent(T, p, d):
     for c in T.children(p):
         preorder_indent(T, c, d + 1)
 
+
 if __name__ == '__main__':
     tree = build_UNIST_tree()
 
     preorder_indent(tree, tree.root(), 0)
-    print('\n')
+
     """ some code showing how to find positions in a binary tree"""
     root = tree.root()
     p_engineering = tree.left(root)
     p_business = tree.right(root)
-    p_me = tree.left(p_engineering)
-    p_bd = tree.left(p_me)
-    p_bpm = tree.right(p_me)
+    print(p_engineering.element())
+    print(p_business.element())
+    p_man_eng = tree.left(p_engineering)
+    print(p_man_eng.element())
 
-
-    # print(p_engineering)
-    print('found 1: ', lca(tree._root, p_engineering, p_business))
-    print('found 2: ', lca(tree._root, p_engineering, p_me))
-    print('found 3: ', lca(tree._root, p_bd, p_bpm))
-    print('found 4: ', lca(tree._root, p_business, p_me))
-    # print(tree._root)
+    """ implement here the code to test the LCA function that you implemented """
+    """
+    pos1 = p_bpm
+    pos2 = p_wood
+    lca1 = LCA(tree, pos1, pos2)
+    print("LCA of {0}, {1} is: {2}".format(pos1.element(), pos2.element(), lca1.element()))
+    pos1 = p_wood
+    pos2 = p_bigdata
+    lca1 = LCA(tree, pos1, pos2)
+    print("LCA of {0}, {1} is: {2}".format(pos1.element(), pos2.element(), lca1.element()))
+    pos1 = p_b_a
+    pos2 = p_bpm
+    lca1 = LCA(tree, pos1, pos2)
+    print("LCA of {0}, {1} is: {2}".format(pos1.element(), pos2.element(), lca1.element()))
+        """
