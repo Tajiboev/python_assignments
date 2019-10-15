@@ -6,7 +6,7 @@ Once created, it can be used to interact with a user (asking questions and takin
 based on the answers provided by the user through command line)
 """
 
-from p0.linked_binary_tree import LinkedBinaryTree
+from linked_binary_tree import LinkedBinaryTree
 
 class DecisionTree(LinkedBinaryTree):
     """
@@ -94,8 +94,8 @@ if __name__ == '__main__':
 
     visa_dt = DecisionTree()
     visa_dt.create_decision_tree_from_file("visa_decision_tree.txt")
-    root = visa_dt.root()
-    visa_dt.preorder_indent(root, 0)
-    print("\n\n ====== Please answer the following questions...")
-    visa_dt.use_tree()
+    # root = visa_dt.root()
+    # visa_dt.preorder_indent(root, 0)
+    # print("\n\n ====== Please answer the following questions...")
+    # visa_dt.use_tree()
 

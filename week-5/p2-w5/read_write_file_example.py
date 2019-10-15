@@ -26,7 +26,7 @@ if __name__ == '__main__':
     """"# Now let's open a file
     In the file read.txt, each line contains some datastore separated by the character "comma" (',')"""
 
-    read_file_name = "read.txt"
+    read_file_name = "week-5/p2-w5/read.txt"
     print("Let's open the file {0}...".format(read_file_name))
     read_file = open(read_file_name, "r")
     for line in read_file.readlines():                                  # read lines in file one by one

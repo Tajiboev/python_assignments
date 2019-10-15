@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from m04_trees.p0.linked_queue import LinkedQueue
+from linked_queue import LinkedQueue
 import collections
 
 

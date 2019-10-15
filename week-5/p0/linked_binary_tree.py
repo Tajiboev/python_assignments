@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from m04_trees.p0.binary_tree import BinaryTree
+from binary_tree import BinaryTree
 
 
 class LinkedBinaryTree(BinaryTree):

@@ -3,19 +3,38 @@ Implement here your solution
 NOTE that the package assignment01 must contain 
 """
 
-from stack import ArrayStack
 
+
+from linkedStack import LinkedStack
+
+
+class Company:
+    def __init__(self, name):
+        self.name = name
+        self.shares_owned = LinkedStack()      
+
+    def get_total_shares(self):
+        total = 0
+        top = self.shares_owned.top()
+        while top:
+            total += top.data[0]
+            top = top.next
+        return total
+
+
+    
 class StockManager:
     def __init__(self):
         self.companies = ('Apple', 'Google', 'BMW')
-        self.apple = ArrayStack()
-        self.google = ArrayStack()
-        self.bmw = ArrayStack()
-        self._total_profit = 0 # intended as non-public, should be accessed with self.get_profit()
+        self.apple = Company('Apple')
+        self.google = Company('Google')
+        self.bmw = Company('BMW')
+        self._net = 0 # intended as non-public, should be accessed with self.get_profit()
+        self.sell_all = False
     
     def __getitem__(self, key):
         """ 
-        This method allow you to use brackets [ ] with self. ex: self[company]
+        This method allows us to use brackets [ ] with self. ex: self[company]
         """
         if key == 'Apple':
             return self.apple
@@ -29,7 +48,17 @@ class StockManager:
         """
         Returns the net income/loss resulting from your buy & sell operations
         """
-        return self._total_profit
+
+        # if self._net > 0:
+        #     print(f'You made {self._net} (profit) from your transactions')
+        # elif self._net < 0:
+        #     print(f'You made {self._net} (loss) from your transactions')
+        # else:
+        #     print(f'You did not make profit/loss. Your net is 0')
+
+        # the block above can be uncommented if we need to print the net value. But we don't need it now.
+        
+        return self._net
     
     def buy_shares(self, company, number, buy_price):
         """
@@ -54,7 +83,7 @@ class StockManager:
         elif buy_price <= 0:
             raise ValueError(f'Buy price cannot be negative')
 
-        self[company].push([number, buy_price])
+        self[company].shares_owned.push([number, buy_price])
 
 
     def buy_multiple(self, company_list, number_list, buy_price_list):
@@ -66,11 +95,10 @@ class StockManager:
             return False
  
         for i in range(0, len(company_list)):
+            print('printing i: ', i)
             try:
                 self.buy_shares(company_list[i], number_list[i], buy_price_list[i])
-            except ValueError:
-                raise
-            except TypeError:
+            except (ValueError, TypeError):
                 raise
 
     def sell_shares(self, company, number, sell_price, profit = 0):
@@ -86,14 +114,27 @@ class StockManager:
         if not isinstance(sell_price, (int, float)):
             raise TypeError('Sell price must be numeric')
         elif sell_price <= 0:
-            raise ValueError(f'Sell price cannot be negative')
+            raise ValueError(f'Sell price must be a positive number')
         
-
-        if self[company].is_empty():
-            self._total_profit += profit
+        if self[company].shares_owned.is_empty():
+            self._net += profit
             return profit
+        
+        shares_owned = self[company].get_total_shares()
+        
+        if not self.sell_all and shares_owned < number:
+            answer = input(f'\nYou own only {shares_owned} shares of "{company}", which is less than what you want to sell ({number}).\nWould you like to sell your {shares_owned} shares?\n' )
+            if answer.strip() == 'Yes':
+                self.sell_all = True
+                pass
+            else:
+                return False
 
-        pop = self[company].pop()
+
+        pop = self[company].shares_owned.pop()
+        # pop is a list containing number & price pair --> [number, price]. Thus:
+        # pop[0] is number of shares
+        # pop[1] is the price at which shares have been bought  
 
         if pop[0] < number:
             number -= pop[0]
@@ -102,8 +143,9 @@ class StockManager:
         elif pop[0] >= number:
             shares_left = pop[0] - number
             profit += (number*(sell_price - pop[1]))
-            self[company].push([shares_left, pop[1]])
-            self._total_profit += profit
+            if shares_left > 0:                
+                self[company].shares_owned.push([shares_left, pop[1]])
+            self._net += profit
             return profit
         
 
@@ -117,25 +159,31 @@ class StockManager:
         for i in range(0, len(company_list)):
             try:
                 self.sell_shares(company_list[i], number_list[i], sell_price_list[i])
-            except ValueError:
+            except (ValueError, TypeError):
                 raise
-            except TypeError:
-                raise
-
+        
 
 
 
 manager = StockManager()
-# manager.buy_shares("Apple", 10, 5)
-# manager.buy_shares("Apple", 10, 5)
-# manager.buy_shares("Apple", 10, 5)
 
-print(manager.sell_shares('Apple', 77, 7))
-print(manager.sell_shares('Apple', 29, 7))
-manager.buy_shares("Apple", 10, 5)
-manager.buy_shares("Apple", 10, 5)
+# test buy methods
+manager.buy_shares("Apple", 100, 79)
+
+manager.buy_multiple(['BMW', 'Google'], [150, 200], [81, 90])
+
+manager.buy_shares("Google", 110, 91)
+manager.buy_shares("Google", 120, 92)
 
 
+print('Total shares of "Apple": ', manager.apple.get_total_shares()) # must print 370 (100 + 120 + 150)
+print('Total shares of "Google": ', manager.google.get_total_shares()) # must print 430 (200 + 110 + 120)
 
-manager.apple.print_contents()
-print('net: ', manager.get_profit())
+print('Profit / loss: ', manager.get_profit()) # must print 0, because we did not do any sale, only bought
+
+
+# test sell methods
+manager.sell_shares('Apple', 380, 85)
+
+
+print('Profit / loss: ', manager.get_profit())

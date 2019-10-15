@@ -19,8 +19,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from m04_trees.p0.priority_queue_base import PriorityQueueBase
-from m04_trees.p0.exceptions import Empty
+from priority_queue_base import PriorityQueueBase
+from exceptions import Empty
 
 
 class HeapPriorityQueue(PriorityQueueBase):  # base class defines _Item
