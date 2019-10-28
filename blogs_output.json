@@ -1,0 +1,54 @@
+{
+    "blogs": [
+        {
+            "userId": 1,
+            "number_of_posts": 10,
+            "words": 224
+        },
+        {
+            "userId": 2,
+            "number_of_posts": 10,
+            "words": 210
+        },
+        {
+            "userId": 3,
+            "number_of_posts": 10,
+            "words": 199
+        },
+        {
+            "userId": 4,
+            "number_of_posts": 10,
+            "words": 247
+        },
+        {
+            "userId": 5,
+            "number_of_posts": 10,
+            "words": 207
+        },
+        {
+            "userId": 6,
+            "number_of_posts": 10,
+            "words": 191
+        },
+        {
+            "userId": 7,
+            "number_of_posts": 10,
+            "words": 204
+        },
+        {
+            "userId": 8,
+            "number_of_posts": 10,
+            "words": 208
+        },
+        {
+            "userId": 9,
+            "number_of_posts": 10,
+            "words": 193
+        },
+        {
+            "userId": 10,
+            "number_of_posts": 10,
+            "words": 202
+        }
+    ]
+}

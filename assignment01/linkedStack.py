@@ -44,16 +44,3 @@ class LinkedStack:
             raise AssertionError('Stack is empty')
         
         return self.head
-
-
-    def print_content(self):
-        if self.head is None:
-            raise AssertionError('Stack is empty')
-        
-        stack_as_list = []
-        current = self.head
-        while current:
-            stack_as_list.append(current.data)
-            current = current.next
-        stack_as_list.reverse()
-        print(f'"Stack content: {stack_as_list}"')
