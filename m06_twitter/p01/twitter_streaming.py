@@ -33,7 +33,7 @@ class TweetToFileListener(StreamListener):
         self.output_file = file_name
 
     def on_data(self, data):
-        print(data)
+        print('new incoming data')
         with open(self.output_file,'a') as tf:
             tf.write(data)
         return True

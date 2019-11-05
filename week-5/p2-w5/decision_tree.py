@@ -37,6 +37,8 @@ class DecisionTree(LinkedBinaryTree):
             for value in values:
                 value = value.strip()                                   
         read_file.close()
+
+        print(values)
         pass
 
 
@@ -70,32 +72,12 @@ class DecisionTree(LinkedBinaryTree):
 
 if __name__ == '__main__':
 
-    """ ============== test take_decision_from_input """
-    # loan_dt = DecisionTree()
-    # root = loan_dt._add_root("Is the loan required greater than 20,000,000 KRW?\n")
-    # root_left = loan_dt._add_left(root, "Is your criminal record empty?\n")
-    # root_right = loan_dt._add_right(root, "Have you been in your current job for less than 1 year?\n")
-    # loan_dt._add_left(root_left, "Sorry, we cannot lend you any money!\n")
-    # crim_rec_r = loan_dt._add_right(root_left, "Have you been in your current job for less than 5 years?\n")
-    # loan_dt._add_left(crim_rec_r, "Loan granted at 6pc interest\n")
-    # years_r = loan_dt._add_right(crim_rec_r, "Do you currently have more than 50,000,000 KRW in your bank account?\n")
-    # loan_dt._add_left(years_r, "Loan granted at 5pc interest\n")
-    # loan_dt._add_right(years_r, "Loan granted at 3,5pc interest\n")
-    # money_l = loan_dt._add_left(root_right, "Do you currently have more than 30,000,000 KRW in your bank account?\n")
-    # money_r = loan_dt._add_right(root_right, "Do you currently have more than 30,000,000 KRW in your bank account?\n")
-    # loan_dt._add_left(money_l, "Loan granted at 10pc interest\n")
-    # loan_dt._add_right(money_l, "Loan granted at 8pc interest\n")
-    # loan_dt._add_left(money_r, "Loan granted at 7pc interest\n")
-    # loan_dt._add_right(money_r, "Loan granted at 6pc interest\n")
-    # loan_dt.take_decision_from_user_input()
-
-
     """ ==================== test create decision tree from file """
 
     visa_dt = DecisionTree()
     visa_dt.create_decision_tree_from_file("visa_decision_tree.txt")
-    root = visa_dt.root()
-    visa_dt.preorder_indent(root, 0)
-    print("\n\n ====== Please answer the following questions...")
-    visa_dt.use_tree()
+    # root = visa_dt.root()
+    # visa_dt.preorder_indent(root, 0)
+    # print("\n\n ====== Please answer the following questions...")
+    # visa_dt.use_tree()
 

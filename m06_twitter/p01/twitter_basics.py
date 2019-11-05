@@ -6,7 +6,7 @@ your credentials: access_token, access_token_secret, consumer_key, consumer_secr
 More info about the Twitter API at: https://dev.twitter.com/overview/api
 """
 
-from m06_twitter.p0.twitter_streaming import TweetToFileListener
+from twitter_streaming import TweetToFileListener
 from time import sleep
 
 from tweepy import OAuthHandler
@@ -46,6 +46,10 @@ def listen_and_store_tweets(keywords, duration, output_file, twitter_credentials
     :param output_file: the file where tweets will be stored
     :param twitter_credentials: a dictionary with credentials to access twitter
     """
+    newStream = get_tweet_stream(output_file, twitter_credentials)
+    newStream.filter(track=keywords, is_async=True) 
+    sleep(duration)
+    newStream.disconnect()
     pass
 
 
@@ -54,7 +58,25 @@ def count_tweets(output_file):
     This function counts the number of tweets stored in output_file
     :returns the number of tweets in output_file
     """
-    pass
+    tweets_file = open(output_file, "r")
+
+    # a list where we will store the tweets parsed from output_file
+    tweet_list = []
+
+    # Each line in the output file is a different tweet
+    # Note that tweets in output file are interleaved by empty lines (that is, lines containing only the "\n" char)
+    # This is line must be skipped (see "if" statement within the for loop)
+    for line in tweets_file:
+        if line is not "\n":
+            # using json, we can parse each line into a dictionary "tweet"
+            tweet_dict = json.loads(line)
+            # store the dictionary representing each tweet in the tweet_list list
+            tweet_list.append(tweet_dict)
+
+    # always remember to close file when you don't need it
+    tweets_file.close()
+    return tweet_list.__len__()
+
 
 
 # display the text and user info of tweets mae by users with more than follow_num followers
@@ -67,6 +89,30 @@ def show_tweets_high_followed_users(output_file, follower_num):
     :param follower_num: the minimum number of followers required to display a tweet
     :return:
     """
+    tweets_file = open(output_file, "r")
+
+    # a list where we will store the tweets parsed from output_file
+    tweet_list = []
+
+    # Each line in the output file is a different tweet
+    # Note that tweets in output file are interleaved by empty lines (that is, lines containing only the "\n" char)
+    # This is line must be skipped (see "if" statement within the for loop)
+    for line in tweets_file:
+        if line is not "\n":
+            # using json, we can parse each line into a dictionary "tweet"
+            tweet_dict = json.loads(line)
+            # store the dictionary representing each tweet in the tweet_list list
+            tweet_list.append(tweet_dict)
+
+    # always remember to close file when you don't need it
+    tweets_file.close()
+
+    for tweet in tweet_list:
+        if 'user' in tweet:
+            if tweet['user']["followers_count"] > follower_num:
+                print('printing @ high_followed_users\n',tweet) 
+
+    
     pass
 
 
@@ -81,25 +127,41 @@ def listen_and_store_tweets_lan(keywords, duration, lan, output_file, twitter_cr
     :param output_file: the file where tweets will be stored
     :param twitter_credentials: a dictionary with credentials to access twitter
     """
+    newStream = get_tweet_stream(output_file, twitter_credentials)
+    newStream.filter(track=keywords, languages=lan, is_async=True) 
+    sleep(duration)
+    newStream.disconnect()
     pass
 
 
+def load_props(prop_file):
+    access_token, access_token_secret , consumer_key, consumer_secret = "", "", "", ""
+    with open(prop_file, "r") as f:
+        for line in f:
+            l = line.split("=")
+            if l[0] == "ACCESS_TOKEN":
+                access_token = l[1].strip()
+            elif(l[0] == "ACCESS_TOKEN_SECRET"):
+                access_token_secret = l[1].strip()
+            elif (l[0] == "CONSUMER_KEY"):
+                consumer_key = l[1].strip()
+            elif (l[0] == "CONSUMER_SECRET"):
+                consumer_secret = l[1].strip()
+    return access_token, access_token_secret , consumer_key, consumer_secret
+
 if __name__ == '__main__':
     # Variables that contains the user credentials to access Twitter API
-    access_token = "YOUR_ACCESS_TOKEN"
-    access_token_secret = "YOUR_ACCESS_TOKEN_SECRET"
-    consumer_key = "YOUR_CONSUMER_KEY"
-    consumer_secret = "YOUR_CONSUMER_SECRET"
+    access_token, access_token_secret, consumer_key, consumer_secret = load_props("api.txt")
 
     tweet_cred = {'access_token': access_token, 'access_token_secret': access_token_secret,
                   'consumer_key': consumer_key, 'consumer_secret': consumer_secret}
 
     """ UNCOMMENT line by line to text your functions"""
 
-    # listen_and_store_tweets(['trump', 'clinton'],20, "test_tweet.json", tweet_cred)
+    listen_and_store_tweets(['trump', 'clinton'],2, "test_tweet.json", tweet_cred)
 
-    # print(count_tweets("test_tweet.json"))
+    print(count_tweets("test_tweet.json"), '= number of tweets')
 
-    # listen_and_store_tweets_lan(['trump', 'clinton'], 15, ['en', 'es', 'ko'], "test_tweet.json", tweet_cred)
+    listen_and_store_tweets_lan(['trump', 'clinton'], 2, ['en', 'es', 'ko'], "test_tweet.json", tweet_cred)
 
-    # show_tweets_high_followed_users("test_tweet.json",7)
+    show_tweets_high_followed_users("test_tweet.json",7)

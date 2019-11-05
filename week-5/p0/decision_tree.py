@@ -35,8 +35,24 @@ class DecisionTree(LinkedBinaryTree):
         for line in read_file.readlines():                                  # read lines in file one by one
             values = line.split(',')                                        
             for value in values:
-                value = value.strip()                                   
+                value = value.strip()  
+
+            print(values)
+            prev = values[0]
+            if values[0] == '0':
+                self._add_root(values[2]) 
+            elif values[0] == '1':
+                if values[1] == 'left':
+                    self._add_left(self.root(), values[2])
+                else:
+                    self._add_right(self.root(), values[2])
+    
+
+            
+
         read_file.close()
+
+        print(self._root._element)
         pass
 
 
@@ -94,8 +110,8 @@ if __name__ == '__main__':
 
     visa_dt = DecisionTree()
     visa_dt.create_decision_tree_from_file("visa_decision_tree.txt")
-    # root = visa_dt.root()
-    # visa_dt.preorder_indent(root, 0)
+    root = visa_dt.root()
+    visa_dt.preorder_indent(root, 0)
     # print("\n\n ====== Please answer the following questions...")
     # visa_dt.use_tree()
 
